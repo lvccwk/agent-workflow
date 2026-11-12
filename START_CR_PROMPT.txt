@@ -1,0 +1,8 @@
+Follow AGENTS.md strictly. Start or resume this Change Request from its current documented stage.
+
+1. Read CR/ and the latest REPORT/session_handover.md if present.
+2. Verify current phase, approved scope and outstanding items.
+3. If this is a new CR, perform Phase 0–2 only and stop at Gate A for my approval.
+4. If this is an existing CR, continue only the stage that has explicit approval; never skip a gate.
+5. Record evidence and exact file references in REPORT/.
+6. Explain progress in Traditional Chinese. Do not execute SQL or deploy.
