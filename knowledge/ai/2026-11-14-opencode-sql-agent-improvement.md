@@ -1,3 +1,12 @@
+---
+title: OpenCode SQL Agent 改善建議 — Evidence-Driven Development
+source: telegram
+saved: 2026-11-14
+category: ai
+tags: [agent, opencode, sql, evidence-driven, workflow]
+note: 用戶經 Telegram 傳來嘅 Agent 改善建議
+---
+
 # OpenCode SQL Agent 改善建議 — Evidence-Driven Development
 
 > 目標：解決 Agent 不斷做錯、重複分析、改錯 Stored Procedure 嘅問題。

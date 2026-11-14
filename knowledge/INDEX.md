@@ -14,7 +14,7 @@
 
 ## 🤖 AI
 
-<!-- 新增項目在下面 -->
+- 2026-11-14 [OpenCode SQL Agent 改善建議 — Evidence-Driven Development](ai/2026-11-14-opencode-sql-agent-improvement.md) #agent #opencode #sql
 
 ---
 

@@ -13,7 +13,7 @@ Change Request（CR）工程工作流程嘅文件同筆記集合，針對 **Java
 ├── docs/         規則、指引同專案結構定義
 ├── guides/       01–07 全流程操作手冊（Markdown + Word）
 ├── prompts/      可直接複製使用嘅 Prompt
-├── notes/        筆記、改善建議、會議紀錄
+├── knowledge/    手機資料入庫（自動分類存檔）
 └── README.md
 ```
 
@@ -56,12 +56,14 @@ Change Request（CR）工程工作流程嘅文件同筆記集合，針對 **Java
 | [phase5-independent-verification.md](prompts/phase5-independent-verification.md) | Phase 5 獨立驗證：Prompt A（Code Review）+ Prompt B（Test Case 產生） |
 | [session-review.md](prompts/session-review.md) | Session 交接：產生 `REPORT/session_handover.md` |
 
-### notes/ — 筆記與改善建議
+### knowledge/ — 手機資料入庫
 
 | 檔案 | 內容 |
 |---|---|
-| [2026-11-14-opencode-sql-agent-improvement.md](notes/2026-11-14-opencode-sql-agent-improvement.md) | **Agent 改善建議**：Evidence-Driven Development、限定 Target SP、Minimal Diff、Retry Limit、Reviewer Agent 分工 |
-| [README.md](notes/README.md) | Notes 資料夾使用說明 |
+| [INDEX.md](knowledge/INDEX.md) | 總目錄（自動維護，每存一篇加一行） |
+| [ai/2026-11-14-opencode-sql-agent-improvement.md](knowledge/ai/2026-11-14-opencode-sql-agent-improvement.md) | **Agent 改善建議**：Evidence-Driven Development、限定 Target SP、Minimal Diff、Retry Limit、Reviewer Agent 分工 |
+
+分類資料夾：`inbox/`（未分類）、`ai/`、`dev/`、`finance/`、`life/`、`reading/`
 
 ---
 
