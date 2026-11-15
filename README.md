@@ -28,6 +28,8 @@ Change Request（CR）工程工作流程嘅文件同筆記集合，針對 **Java
 | [AGENTS.md](docs/AGENTS.md) | **核心規則**：Agent mission、資料夾契約、安全規則、強制工作流程與停機點、品質閘門、回應格式 |
 | [CR-Development-Instructions.md](docs/CR-Development-Instructions.md) | 精簡版開發指引：資料夾規則 + 六步工作流程 |
 | [CR-001-structure.md](docs/CR-001-structure.md) | CR-001 標準資料夾結構示例（CR / DATABASE / OLD / SOLUTION / TEST / REPORT） |
+| [SQL_Developer/AGENTS.md](docs/SQL_Developer/AGENTS.md) | **Stored Procedure CR 受控規則**：八階段流程、Gate A/B/C 人手閘、CONFIRMED/INFERRED/UNKNOWN 證據分級、Minimal Diff、短報告合約 |
+| [SQL_Developer/opencode.jsonc](docs/SQL_Developer/opencode.jsonc) | **OpenCode 嚴格權限基線**：edit 只限 REPORT/（SOLUTION/ 要 ask）、shell 只准 git status/diff、webfetch/websearch/subagent 全 deny |
 
 ### guides/ — 完整操作手冊
 
