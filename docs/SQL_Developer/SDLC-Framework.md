@@ -1,185 +1,185 @@
-# SP Change Request SDLC 框架
+# SP Change Request SDLC Framework
 
-> Stored Procedure 變更請求嘅標準流程、角色分工同交付物定義。
-> 適用於 Production 資料庫嘅 SP 修改，確保每次變更都可追溯、可審核、可回滾。
-
----
-
-## 1. 摘要
-
-**問題**：現時 SP 變更缺乏統一流程，影響分析、Code Review、UAT 同部署之間嘅責任邊界模糊，出事時難以追溯。
-
-**目標**：建立一份所有持份者都跟嘅 SDLC 框架，令每次 SP 變更都有明確階段、負責人、交付物同簽核點。
-
-**建議方案**：採用 7 階段流程（CR → 影響分析 → 開發／Review → UAT → CAB → 部署 → 驗證），配合固定報告範本同 Git 版本控制。
+> Standard process, role responsibilities and deliverable definitions for Stored Procedure change requests.
+> Applies to SP modifications in Production databases, ensuring every change is traceable, auditable and reversible.
 
 ---
 
-## 2. 範圍
+## 1. Executive Summary
 
-### ✅ 適用
+**Problem**: SP changes currently lack a unified process. Responsibility boundaries between impact analysis, code review, UAT and deployment are unclear, making root-cause tracing difficult when something goes wrong.
 
-- 所有 Production 資料庫嘅 Stored Procedure 新增、修改、刪除
-- 涉及 SP 參數、輸出欄位、業務邏輯、效能優化嘅變更
-- 由 SP 衍生嘅 scheduler job、trigger、view 變更
+**Objective**: Establish a single SDLC framework that all stakeholders follow, so every SP change has defined phases, owners, deliverables and sign-off points.
 
-### ❌ 不適用
-
-- 純資料修正（data fix）— 走獨立 Data Change 流程
-- 資料表結構變更（DDL）— 走 Schema Change 流程
-- 非 Production 環境嘅實驗性修改
-- 報表工具層（SSRS / Power BI）嘅格式調整
+**Proposed approach**: Adopt a 7-phase workflow (CR → Impact Analysis → Development/Review → UAT → CAB → Deployment → Verification), supported by a fixed report template and Git version control.
 
 ---
 
-## 3. 流程圖
+## 2. Scope
+
+### ✅ In scope
+
+- Creation, modification and deletion of Stored Procedures in all Production databases
+- Changes to SP parameters, output columns, business logic or performance tuning
+- Changes to SP-derived scheduler jobs, triggers and views
+
+### ❌ Out of scope
+
+- Pure data fixes — follow the separate Data Change process
+- Table structure changes (DDL) — follow the Schema Change process
+- Experimental changes outside Production
+- Formatting changes at the reporting-tool layer (SSRS / Power BI)
+
+---
+
+## 3. Process Flow
 
 ```mermaid
 flowchart LR
-    A[提出 CR] --> B[影響分析]
-    B --> C[開發 + Code Review]
-    C --> D[UAT 測試]
-    D --> E[CAB 批准]
-    E --> F[部署 Prod]
-    F --> G[驗證 / Rollback]
+    A[Raise CR] --> B[Impact Analysis]
+    B --> C[Development + Code Review]
+    C --> D[UAT Testing]
+    D --> E[CAB Approval]
+    E --> F[Deploy to Prod]
+    F --> G[Verification / Rollback]
 
     B -.Gate A.-> C
     D -.Gate B.-> E
     F -.Gate C.-> G
 ```
 
-### 階段說明
+### Phase descriptions
 
-| # | 階段 | 目的 | 停機點 |
+| # | Phase | Purpose | Stop condition |
 |---|---|---|---|
-| 1 | **提出 CR** | 記錄業務需求、驗收標準 | Requirement 未清 → 停 |
-| 2 | **影響分析** | 找出受影響 SP、table、caller、job、輸出 | 依賴缺失 → 停（Gate A）|
-| 3 | **開發 + Code Review** | 最小差異修改 + 獨立審查 | 未經批准 → 停 |
-| 4 | **UAT 測試** | 用獨立預期結果驗證 | 預期結果無依據 → 停（Gate B）|
-| 5 | **CAB 批准** | 變更諮詢委員會審批 | 未批准 → 停 |
-| 6 | **部署 Prod** | 按 deploy script 執行 | 無 rollback 方案 → 停 |
-| 7 | **驗證 / Rollback** | 確認結果，必要時回滾 | 驗證失敗 → 即刻回滾（Gate C）|
+| 1 | **Raise CR** | Record business requirements and acceptance criteria | Requirement unclear → STOP |
+| 2 | **Impact Analysis** | Identify affected SPs, tables, callers, jobs and outputs | Missing dependency → STOP (Gate A) |
+| 3 | **Development + Code Review** | Minimal-diff change plus independent review | Not approved → STOP |
+| 4 | **UAT Testing** | Verify against independent expected results | Expected results unsupported → STOP (Gate B) |
+| 5 | **CAB Approval** | Change Advisory Board review | Not approved → STOP |
+| 6 | **Deploy to Prod** | Execute per deploy script | No rollback plan → STOP |
+| 7 | **Verification / Rollback** | Confirm outcome; roll back if required | Verification fails → immediate rollback (Gate C) |
 
 ---
 
-## 4. 各階段責任
+## 4. Phase Responsibilities
 
-| 階段 | 負責人 | 交付物 | Sign-off |
+| Phase | Owner | Deliverable | Sign-off |
 |---|---|---|---|
-| 提出 CR | Business Owner / BA | CR 文件（需求 + 驗收標準） | Business Owner |
-| 影響分析 | Dev | 受影響 table / app / job 清單、As-Is 分析 | Tech Lead |
-| 開發 | Dev | SOLUTION/ 修改後 SQL + Diff | Dev Lead |
-| Code Review | DBA | Review 記錄（逐項對照需求） | DBA |
-| UAT | QA / User | 測試案例 + 實際執行證據 | Business Owner |
-| CAB 批准 | Change Manager | CAB 會議紀錄 | CAB |
-| 部署 | DBA | Deploy script + Rollback script | Change Manager |
-| 驗證 | DBA / Dev | 部署後驗證報告 | Tech Lead |
+| Raise CR | Business Owner / BA | CR document (requirements + acceptance criteria) | Business Owner |
+| Impact Analysis | Dev | Affected tables / apps / jobs list, As-Is analysis | Tech Lead |
+| Development | Dev | Modified SQL in SOLUTION/ + diff | Dev Lead |
+| Code Review | DBA | Review record (item-by-item against requirements) | DBA |
+| UAT | QA / User | Test cases + actual execution evidence | Business Owner |
+| CAB Approval | Change Manager | CAB meeting minutes | CAB |
+| Deployment | DBA | Deploy script + rollback script | Change Manager |
+| Verification | DBA / Dev | Post-deployment verification report | Tech Lead |
 
-> **原則**：同一個人唔可以同時做「開發」同「獨立 Review」；Agent 只可以提供建議，唔可以代任何人 sign-off。
+> **Principle**: the same person cannot perform both "development" and "independent review". The agent may only provide recommendations; it cannot sign off on anyone's behalf.
 
 ---
 
-## 5. 風險同 Rollback 方案
+## 5. Risks and Rollback
 
-### 常見風險
+### Common risks
 
-| 風險 | 影響 | 緩解措施 |
+| Risk | Impact | Mitigation |
 |---|---|---|
-| 改動影響未識別嘅 caller | 其他報表出錯 | 影響分析必須列出所有 caller（job / app / view）|
-| 輸出欄位順序改變 | 下游 ETL 或報表失敗 | 禁止未經批准改 output schema |
-| 效能退化 | Production 逾時 | UAT 需包含執行計劃（execution plan）對比 |
-| 資料不一致 | 數字對唔上 | 部署前後做 reconciliation check |
-| Rollback 失敗 | 無法復原 | Rollback script 必須喺 UAT 環境預演過 |
+| Change affects unidentified callers | Other reports break | Impact analysis must list every caller (job / app / view) |
+| Output column order changes | Downstream ETL or reports fail | Prohibit output schema changes without approval |
+| Performance regression | Production timeouts | UAT must include execution-plan comparison |
+| Data inconsistency | Figures do not reconcile | Run reconciliation checks before and after deployment |
+| Failed rollback | Cannot recover | Rollback script must be rehearsed in the UAT environment |
 
-### Rollback 原則
+### Rollback principles
 
-1. **每次變更都要有 rollback script**，同 deploy script 一齊交
-2. Rollback script 必須喺非 Production 環境**實際執行過**，並記錄證據
-3. 部署後驗證失敗 → **即刻回滾**，唔好嘗試即場修補
-4. 回滾後 24 小時內提交 incident report
+1. **Every change must have a rollback script**, submitted together with the deploy script.
+2. The rollback script must have been **actually executed** in a non-Production environment, with evidence recorded.
+3. If post-deployment verification fails → **roll back immediately**; never attempt an in-place hotfix.
+4. Submit an incident report within 24 hours of rollback.
 
-### 停機條件（STOP）
+### Stop conditions (STOP)
 
-遇到以下任何一項，即刻停止並上報：
+Stop immediately and escalate if any of the following apply:
 
-- Business rule 有衝突或唔清晰
-- 必要嘅 SQL dependency 缺失
-- 改動影響到 UNKNOWN 邏輯
-- 測試連續失敗兩次
-- 無法跟隨已批准嘅實施計劃
+- Business rules conflict or are unclear
+- A required SQL dependency is missing
+- The change affects UNKNOWN logic
+- Tests fail twice consecutively
+- The approved implementation plan cannot be followed
 
 ---
 
-## 6. 版本控制
+## 6. Version Control
 
-### 基本規則
+### Baseline rules
 
-| 項目 | 規則 |
+| Item | Rule |
 |---|---|
-| 存放位置 | 所有 SP 源碼放入 Git repo（`DATABASE/` 唯讀參考、`OLD/` 基線、`SOLUTION/` 修改）|
-| 分支策略 | `main` = Production 對應版本；每個 CR 開 `cr/<CR-ID>` 分支 |
-| Commit message | `CR-<ID>: <Requirement-ID> <簡短描述>` |
-| 命名規則 | 檔名 = SP 名稱（例如 `sp_AgencyReport.sql`），一個 SP 一個檔 |
-| Tag | 每次 Production 部署打 tag：`prod-YYYY-MM-DD-<CR-ID>` |
-| 禁止 | 唔准 `push --force`、唔准改寫已部署嘅 history |
+| Location | All SP source stored in a Git repo (`DATABASE/` read-only reference, `OLD/` baseline, `SOLUTION/` changes) |
+| Branching | `main` mirrors Production; each CR uses a `cr/<CR-ID>` branch |
+| Commit message | `CR-<ID>: <Requirement-ID> <short description>` |
+| Naming | File name = SP name (for example `sp_AgencyReport.sql`); one SP per file |
+| Tagging | Tag every Production deployment: `prod-YYYY-MM-DD-<CR-ID>` |
+| Prohibited | No `push --force`; no rewriting deployed history |
 
-### 資料夾契約
+### Folder contract
 
 ```
-CR/         業務需求（唯讀）
-DATABASE/   參考 DDL、其他 SP、schema（唯讀）
-OLD/        原始基線源碼（唯讀，不可改）
-SOLUTION/   批准後嘅修改版本
-TEST/       測試腳本、預期結果、實際證據
-REPORT/     各階段分析報告
+CR/         Business requirements (read-only)
+DATABASE/   Reference DDL, other SPs, schema (read-only)
+OLD/        Original baseline source (read-only, must not be modified)
+SOLUTION/   Approved modified versions
+TEST/       Test scripts, expected results, actual evidence
+REPORT/     Phase-by-phase analysis reports
 ```
 
 ---
 
-## 7. 待決定事項
+## 7. Open Decisions
 
-| # | 問題 | 影響 | 負責人 | 期限 |
+| # | Question | Impact | Owner | Due |
 |---|---|---|---|---|
-| 1 | CAB 審批週期係每週定每兩週？ | 影響 CR 排期 | Change Manager | 待定 |
-| 2 | UAT 環境係咪有 Production 級別嘅資料量？ | 影響效能測試可信度 | DBA | 待定 |
-| 3 | 緊急變更（Emergency CR）係咪走簡化流程？ | 影響事故應變速度 | Tech Lead | 待定 |
-| 4 | Rollback script 由 Dev 定 DBA 撰寫？ | 影響責任歸屬 | 管理層 | 待定 |
-| 5 | 舊 SP（未有 Git 版本）點樣納入基線？ | 影響覆蓋範圍 | DBA | 待定 |
+| 1 | Is the CAB cycle weekly or fortnightly? | Affects CR scheduling | Change Manager | TBD |
+| 2 | Does the UAT environment hold Production-scale data volumes? | Affects confidence in performance testing | DBA | TBD |
+| 3 | Do emergency CRs follow a simplified process? | Affects incident response speed | Tech Lead | TBD |
+| 4 | Should the rollback script be written by Dev or DBA? | Affects ownership | Management | TBD |
+| 5 | How are legacy SPs (not yet in Git) brought into the baseline? | Affects coverage | DBA | TBD |
 
 ---
 
-## 附錄 A：報告寫作指引
+## Appendix A: Report Writing Guide
 
-### 點解會覺得難寫
+### Why it feels difficult
 
-1. **一次過叫 AI 寫完整份 report** — AI 冇公司 context，出嚟嘅內容會好空泛
-2. **用文字段落描述多角色流程** — Dev / DBA / QA / Approver 混在一起會好亂
-3. **冇先講結論** — 讀者睇唔到重點
+1. **Asking AI to write the whole report in one go** — the AI lacks company context, so the output is vague.
+2. **Describing a multi-role process in prose** — Dev / DBA / QA / Approver all blur together.
+3. **No conclusion up front** — readers cannot see the point.
 
-### 正確做法
+### Correct approach
 
-| 做法 | 原因 |
+| Practice | Reason |
 |---|---|
-| 先定 MD 範本，每份跟住寫 | 結構固定，內容自然齊 |
-| 流程用 Mermaid 畫 | 一圖勝千字，MD 原生支援 |
-| 角色同責任用表格 | 每個階段邊個做、交咩、邊個簽，一目了然 |
-| 叫 AI 一次寫一節 | 每次俾範本 + 公司實際做法 + 一個滿意例子 |
-| 最後叫 AI 做 reviewer | 「扮 IT manager 讀呢份 report，指出邊度唔清楚」 |
+| Fix an MD template and follow it every time | Structure is consistent and nothing gets omitted |
+| Draw the process with Mermaid | One diagram beats a thousand words; natively supported in Markdown |
+| Use tables for roles and responsibilities | Who does what, what they deliver and who signs off is immediately clear |
+| Ask AI to write one section at a time | Supply the template, your company's actual practice, and one example you are happy with |
+| Finally, ask AI to act as reviewer | "Act as an IT manager reading this report and point out what is unclear" |
 
-### 最重要嘅兩節
+### The two most important sections
 
-**第 1 節（摘要）同第 3 節（流程圖）** — 老闆通常只睇呢兩部分。呢兩節清楚，成份 report 已經清楚大半。
-
----
-
-## 附錄 B：使用方式
-
-1. 複製呢份文件做新 CR 嘅 `REPORT/00_framework.md`
-2. 按實際情況填寫第 1、2 節
-3. Mermaid 流程圖按 CR 複雜度調整（可加／減階段）
-4. 第 4 節角色表按公司實際編制修改
-5. 每次提交報告前，用附錄 A 嘅檢查清單自我審核
+**Section 1 (Summary) and Section 3 (Process Flow)** — senior stakeholders usually read only these two. When they are clear, most of the report is clear.
 
 ---
 
-*版本：1.0 ｜ 最後更新：2026-11-14*
+## Appendix B: How to Use
+
+1. Copy this document as `REPORT/00_framework.md` for a new CR.
+2. Fill in Sections 1 and 2 with the actual situation.
+3. Adjust the Mermaid flow diagram to the CR's complexity (add or remove phases).
+4. Adapt the role table in Section 4 to your organisation's structure.
+5. Before submitting any report, self-check against the checklist in Appendix A.
+
+---
+
+*Version: 1.0 | Last updated: 2026-11-14*

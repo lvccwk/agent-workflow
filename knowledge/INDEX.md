@@ -1,44 +1,44 @@
 # 📚 Knowledge Index
 
-手機資料入庫總目錄 — 由 Hermes 自動維護。
+Master index for phone capture — maintained automatically by Hermes.
 
-> 每存一篇，會在對應分類下加一行：`- YYYY-MM-DD [標題](分類/檔名.md) #tag`
+> One line is added under the matching category for each saved item: `- YYYY-MM-DD [Title](category/file.md) #tag`
 
 ---
 
-## 📥 Inbox（未分類）
+## 📥 Inbox (Uncategorised)
 
-<!-- 新增項目在下面 -->
+<!-- new entries below -->
 
 ---
 
 ## 🤖 AI
 
-- 2026-11-14 [OpenCode SQL Agent 改善建議 — Evidence-Driven Development](ai/2026-11-14-opencode-sql-agent-improvement.md) #agent #opencode #sql
+- 2026-11-14 [OpenCode SQL Agent Improvement — Evidence-Driven Development](ai/2026-11-14-opencode-sql-agent-improvement.md) #agent #opencode #sql
 
 ---
 
 ## 💻 Dev
 
-<!-- 新增項目在下面 -->
+<!-- new entries below -->
 
 ---
 
 ## 💰 Finance
 
-<!-- 新增項目在下面 -->
+<!-- new entries below -->
 
 ---
 
 ## 🌱 Life
 
-<!-- 新增項目在下面 -->
+<!-- new entries below -->
 
 ---
 
 ## 📖 Reading
 
-<!-- 新增項目在下面 -->
+<!-- new entries below -->
 
 ---
 

@@ -1,37 +1,37 @@
 ---
-title: OpenCode SQL Agent 改善建議 — Evidence-Driven Development
+title: OpenCode SQL Agent Improvement — Evidence-Driven Development
 source: telegram
 saved: 2026-11-14
 category: ai
 tags: [agent, opencode, sql, evidence-driven, workflow]
-note: 用戶經 Telegram 傳來嘅 Agent 改善建議
+note: Agent improvement recommendations sent by the user via Telegram
 ---
 
-# OpenCode SQL Agent 改善建議 — Evidence-Driven Development
+# OpenCode SQL Agent Improvement — Evidence-Driven Development
 
-> 目標：解決 Agent 不斷做錯、重複分析、改錯 Stored Procedure 嘅問題。
-> 核心轉變：由「叫 Agent 完成工作」變成「叫 Agent 提供證據，證明每一步正確」。
+> Goal: eliminate the agent's repeated mistakes, re-analysis and incorrect Stored Procedure changes.
+> Core shift: from "ask the agent to complete the work" to "ask the agent to provide evidence that every step is correct".
 
 ---
 
-## 一、點解 Agent 不斷做錯？
+## 1. Why does the agent keep getting it wrong?
 
-| 問題 | 可能原因 | 改善方法 |
+| Problem | Likely cause | Improvement |
 |---|---|---|
-| 理解錯 Business Logic | Agent 自行推斷需求 | 要求引用 SQL 證據 |
-| 改錯 Stored Procedure | 分析範圍太大 | 指定 Target SP |
-| 修改咗不相關 SQL | 冇明確限制修改範圍 | 限制 Minimal Diff |
-| 不斷重新分析 | Session Context 太長 | 分階段開 Session |
-| UAT SQL 不準確 | Agent 自行假設 Expected Result | 先確認 Business Rules |
-| Agent 不斷重試 | 缺少停止條件 | 設定 Retry Limit |
+| Misunderstands business logic | Agent infers requirements on its own | Require cited SQL evidence |
+| Modifies the wrong Stored Procedure | Analysis scope too broad | Specify the target SP |
+| Changes unrelated SQL | No explicit change boundary | Enforce minimal diff |
+| Re-analyses repeatedly | Session context too long | Split into staged sessions |
+| Inaccurate UAT SQL | Agent assumes expected results | Confirm business rules first |
+| Endless retries | No stop condition | Set a retry limit |
 
-**最建議改變嘅係**：由「叫 Agent 完成工作」變成「叫 Agent 提供證據，證明每一步正確」。
+**The single most important change**: from "ask the agent to complete the work" to "ask the agent to provide evidence that every step is correct".
 
 ---
 
-## 二、第一個改善：唔好一開始分析成個 Project
+## 2. First improvement: do not analyse the whole project at once
 
-之前用嘅 prompt：
+Previously used prompt:
 
 ```text
 Analyze this project and explain:
@@ -41,9 +41,9 @@ Stored procedure dependencies
 Potential risks and edge cases
 ```
 
-**問題**：範圍太廣。如果 `DATABASE/` 有 20 個 Stored Procedures，Agent 可能將大量時間用喺不相關嘅 SQL 上，甚至混淆唔同 Procedure 嘅業務用途。
+**Problem**: the scope is too broad. If `DATABASE/` contains 20 stored procedures, the agent may spend most of its time on irrelevant SQL, or confuse the business purpose of different procedures.
 
-### 建議改用 Prompt 1.1
+### Recommended replacement — Prompt 1.1
 
 ```text
 Act as a Senior SQL Server System Analyst.
@@ -82,16 +82,16 @@ Do not propose implementation changes.
 Do not modify files or execute SQL.
 STOP after the As-Is analysis.
 
-Explain in Traditional Chinese.
+Explain in English.
 ```
 
-**最重要係第 5 點** — 要求提供：
+**Point 5 matters most** — require:
 
 ```
 Business Rule → SQL Statement → File Reference
 ```
 
-例如：
+For example:
 
 | Business Rule | SQL Evidence | Status |
 |---|---|---|
@@ -99,13 +99,13 @@ Business Rule → SQL Statement → File Reference
 | Inforce Agency Head | sp_Agency.sql Line 178 | Verified |
 | Reporting Relationship | Missing reference | Unknown |
 
-呢個可以迫使 Agent 區分**已證實嘅 Code 行為**同**佢自己推測嘅業務解釋**。
+This forces the agent to separate **verified code behaviour** from **its own inferred business interpretation**.
 
 ---
 
-## 三、第二個改善：實施 Evidence-Driven Development
+## 3. Second improvement: adopt Evidence-Driven Development
 
-建議喺 `AGENTS.md` 加入以下規則：
+Add the following rules to `AGENTS.md`:
 
 ### Evidence-Driven SQL Development Rules
 
@@ -177,24 +177,24 @@ After 2 failed attempts:
 - Never execute production SQL.
 - Never deploy changes automatically.
 - Never modify `OLD/` or `DATABASE/`.
-- All explanations must be in Traditional Chinese.
+- All explanations must be in English.
 
-> 呢個係 Prompt 層面嘅控制，唔係絕對保證。亦應該配合 OpenCode Permissions 限制檔案修改及 Shell 執行權限。
+> This is a prompt-level control, not an absolute guarantee. It should be combined with OpenCode Permissions to restrict file modification and shell execution.
 
 ---
 
-## 四、第三個改善：每次只交一個細 Task
+## 4. Third improvement: deliver one small task at a time
 
-例如要修改三個 Stored Procedures。
+For example, three stored procedures need to be modified.
 
-**❌ 不建議：**
+**❌ Not recommended:**
 
 ```text
 Implement all CR changes and verify
 that everything is correct.
 ```
 
-**✅ 建議：**
+**✅ Recommended:**
 
 ```text
 Implement Requirement R01 only.
@@ -221,65 +221,65 @@ Identify regression risks.
 Stop and wait for review.
 ```
 
-完成 R01 → 檢查 Diff → 先繼續 R02。
+Complete R01 → review the diff → then proceed to R02.
 
-呢種做法比一次過修改所有 SP 更容易發現問題。
+This approach surfaces problems far more easily than modifying all SPs in one pass.
 
 ---
 
-## 五、第四個改善：加入獨立 Reviewer Agent
+## 5. Fourth improvement: add an independent Reviewer Agent
 
-OpenCode 支援建立專門嘅 Subagent（例如 Reviewer），可以用另一個 Context 專門做 Code Review。
+OpenCode supports dedicated subagents (for example a Reviewer) that run in a separate context to perform code review.
 
-可以將工作分成：
+Work can be split as follows:
 
-| Agent | 責任 |
+| Agent | Responsibility |
 |---|---|
-| Analyst | 分析 Requirement、As-Is |
-| Developer | 根據 Approved Plan 修改 SQL |
-| Reviewer | 重新比較 CR、OLD、SOLUTION |
-| QA | 產生 UAT Cases、檢查實際結果 |
+| Analyst | Analyse requirements and the As-Is state |
+| Developer | Modify SQL according to the approved plan |
+| Reviewer | Independently compare CR, OLD and SOLUTION |
+| QA | Generate UAT cases and check actual results |
 
-唔一定要建立四個自訂 Agent。初期用不同 Session 及不同 Prompt 已經可以實行。
+Four custom agents are not mandatory. Initially, separate sessions with separate prompts are sufficient.
 
-不過，同一個 Model 即使換 Session，仍然可能犯相同錯誤，因此 **Reviewer 必須有清楚嘅驗證依據**。
+However, the same model may repeat the same mistakes even in a new session, so **the reviewer must have clear verification criteria**.
 
 ---
 
-## 六、GPT-6 Luna High 應該點樣用？
+## 6. How should GPT-6 Luna High be used?
 
-建議先試以下安排，唔好即刻全部改用更昂貴嘅 Model。
+Try the following arrangement first rather than immediately switching everything to a more expensive model.
 
-| SDLC 工作 | 建議 |
+| SDLC activity | Recommendation |
 |---|---|
-| As-Is Analysis | Luna High + 限定 Target SP |
-| Requirement Analysis | Luna High + Evidence Matrix |
-| Impact Analysis | Luna High + Dependency List |
-| Implementation Plan | Luna High + Human Approval |
-| SQL Modification | Luna High + 每次一個 Requirement |
-| Independent Review | 新 Session，必要時換 Model |
-| UAT Test Generation | 以確認後嘅 Business Rules 為依據 |
-| UAT Acceptance | 實際執行證據 + Human Sign-off |
+| As-Is Analysis | Luna High + restricted target SP |
+| Requirement Analysis | Luna High + evidence matrix |
+| Impact Analysis | Luna High + dependency list |
+| Implementation Plan | Luna High + human approval |
+| SQL Modification | Luna High + one requirement at a time |
+| Independent Review | New session, switch model if necessary |
+| UAT Test Generation | Based on confirmed business rules |
+| UAT Acceptance | Actual execution evidence + human sign-off |
 
-> High Reasoning 可以增加推理資源，但唔會自動補足缺失嘅 Schema、Business Rules 或執行結果。
+> High reasoning provides more inference budget, but does not automatically supply missing schema, business rules or execution results.
 
 ---
 
-## 七、核心問題分辨
+## 7. Identifying the core problem
 
-Luna High「不斷做不準 Prompt」，需要分辨係邊種錯誤：
+When Luna High "keeps producing inaccurate prompts", identify which type of failure applies:
 
-| 類型 | 問題描述 |
+| Type | Description |
 |---|---|
-| **A. 理解能力問題** | Agent 分析 Stored Procedure 時，經常理解錯 SQL Business Logic |
-| **B. 執行能力問題** | Agent 明明分析啱，但真正修改 SQL 時改錯位置、漏改條件 |
-| **C. 驗證能力問題** | Agent 修改後聲稱冇問題，但人工檢查發現 SQL 或 UAT Test Cases 有錯 |
-| **D. Workflow 問題** | Agent 不斷重新分析、重複修改，同一個問題要 Loop 好多次先完成 |
+| **A. Comprehension problem** | The agent frequently misreads SQL business logic when analysing stored procedures |
+| **B. Execution problem** | The agent analyses correctly but modifies the wrong location or misses conditions |
+| **C. Verification problem** | The agent claims the change is fine, but manual review finds errors in the SQL or UAT test cases |
+| **D. Workflow problem** | The agent re-analyses and re-modifies repeatedly, requiring many loops to finish one issue |
 
-- 如果係 **A** → 重新設計 Analysis Prompt
-- 如果係 **B 或 C** → 加強 Diff Verification 同 Test Evidence
-- 如果係 **D** → 調整整個 OpenCode Agent Loop
+- If **A** → redesign the analysis prompt
+- If **B or C** → strengthen diff verification and test evidence
+- If **D** → restructure the overall OpenCode agent loop
 
 ---
 
-*整理日期：2026-11-14*
+*Compiled: 2026-11-14*

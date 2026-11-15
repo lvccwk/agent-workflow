@@ -1,91 +1,91 @@
 # Agent Workflow — OpenCode CR Agent
 
-Change Request（CR）工程工作流程嘅文件同筆記集合，針對 **Java / SQL Server Stored Procedure / Insurance Agency Reporting** 嘅變更工作。
+A documentation and knowledge collection for Change Request (CR) engineering workflows, focused on **Java / SQL Server Stored Procedures / Insurance Agency Reporting** changes.
 
-設計原則：AI Agent 提供**可審核嘅成果**；業務需求批准、環境操作、UAT 簽收及正式部署，仍然由獲授權人員負責。
+Design principle: the AI Agent produces **auditable deliverables**; business requirement approval, environment operations, UAT sign-off and production deployment remain the responsibility of authorised personnel.
 
 ---
 
-## 📁 目錄結構
+## 📁 Repository Structure
 
 ```
 .
-├── docs/         規則、指引同專案結構定義
-├── guides/       01–07 全流程操作手冊（Markdown + Word）
-├── prompts/      可直接複製使用嘅 Prompt
-├── knowledge/    手機資料入庫（自動分類存檔）
+├── docs/         Rules, guidelines and project structure definitions
+├── guides/       01–07 end-to-end operating manual (Markdown + Word)
+├── prompts/      Ready-to-copy prompts
+├── knowledge/    Phone capture inbox (auto-categorised archive)
 └── README.md
 ```
 
 ---
 
-## 📚 文件索引
+## 📚 Document Index
 
-### docs/ — 規則與指引
+### docs/ — Rules and Guidelines
 
-| 檔案 | 內容 |
+| File | Description |
 |---|---|
-| [AGENTS.md](docs/AGENTS.md) | **核心規則**：Agent mission、資料夾契約、安全規則、強制工作流程與停機點、品質閘門、回應格式 |
-| [CR-Development-Instructions.md](docs/CR-Development-Instructions.md) | 精簡版開發指引：資料夾規則 + 六步工作流程 |
-| [CR-001-structure.md](docs/CR-001-structure.md) | CR-001 標準資料夾結構示例（CR / DATABASE / OLD / SOLUTION / TEST / REPORT） |
-| [SQL_Developer/AGENTS.md](docs/SQL_Developer/AGENTS.md) | **Stored Procedure CR 受控規則**：八階段流程、Gate A/B/C 人手閘、CONFIRMED/INFERRED/UNKNOWN 證據分級、Minimal Diff、短報告合約 |
-| [SQL_Developer/opencode.jsonc](docs/SQL_Developer/opencode.jsonc) | **OpenCode 嚴格權限基線**：edit 只限 REPORT/（SOLUTION/ 要 ask）、shell 只准 git status/diff、webfetch/websearch/subagent 全 deny |
-| [SQL_Developer/SDLC-Framework.md](docs/SQL_Developer/SDLC-Framework.md) | **SP Change Request SDLC 框架**：7 階段流程（Mermaid）、角色責任表、風險與 Rollback、Git 版本控制、報告寫作指引 |
+| [AGENTS.md](docs/AGENTS.md) | **Core rules**: agent mission, folder contract, safety rules, mandatory workflow and stop points, quality gates, response format |
+| [CR-Development-Instructions.md](docs/CR-Development-Instructions.md) | Condensed development guide: folder rules + six-step workflow |
+| [CR-001-structure.md](docs/CR-001-structure.md) | CR-001 standard folder structure example (CR / DATABASE / OLD / SOLUTION / TEST / REPORT) |
+| [SQL_Developer/AGENTS.md](docs/SQL_Developer/AGENTS.md) | **Stored Procedure CR controlled-agent rules**: eight-phase workflow, Gate A/B/C human approvals, CONFIRMED/INFERRED/UNKNOWN evidence grading, minimal diff, short-report contract |
+| [SQL_Developer/opencode.jsonc](docs/SQL_Developer/opencode.jsonc) | **OpenCode strict permission baseline**: edit limited to REPORT/ (SOLUTION/ requires ask), shell only git status/diff, webfetch/websearch/subagent all denied |
+| [SQL_Developer/SDLC-Framework.md](docs/SQL_Developer/SDLC-Framework.md) | **SP Change Request SDLC framework**: 7-phase workflow (Mermaid), role responsibility matrix, risks and rollback, Git version control, report writing guide |
 
-### guides/ — 完整操作手冊
+### guides/ — Complete Operating Manual
 
-| 檔案 | 內容 |
+| File | Description |
 |---|---|
-| [OpenCode_CR_Agent_01-07.md](guides/OpenCode_CR_Agent_01-07.md) | **01–07 全流程手冊**：逐階段目的、操作、Prompt、交付物、停機條件；附錄含完整 AGENTS.md |
-| [OpenCode_CR_Agent_01-07.docx](guides/OpenCode_CR_Agent_01-07.docx) | 同上手冊嘅 Word 版本（方便派發／列印） |
+| [OpenCode_CR_Agent_01-07.md](guides/OpenCode_CR_Agent_01-07.md) | **01–07 end-to-end manual**: per-phase purpose, actions, prompts, deliverables, stop conditions; appendices include the full AGENTS.md |
+| [OpenCode_CR_Agent_01-07.docx](guides/OpenCode_CR_Agent_01-07.docx) | Word version of the same manual (for distribution/printing) |
 
-**階段對照：**
+**Phase mapping:**
 
-| 步驟 | 階段 | 核心輸出 |
+| Step | Phase | Core output |
 |---|---|---|
-| 01 | Requirement Intake（Phase 0） | Requirement Register |
-| 02 | As-Is & Impact（Phase 1 + 2） | As-Is / Dependencies / Impact |
-| 03 | To-Be & Plan（Gate A） | Implementation Plan（等批准） |
-| 04 | Build | SOLUTION/ 修改 + Diff |
+| 01 | Requirement Intake (Phase 0) | Requirement Register |
+| 02 | As-Is & Impact (Phase 1 + 2) | As-Is / Dependencies / Impact |
+| 03 | To-Be & Plan (Gate A) | Implementation Plan (awaiting approval) |
+| 04 | Build | SOLUTION/ changes + Diff |
 | 05 | Independent Verification | Code Review Report |
-| 06 | UAT Preparation & Evidence | Test Cases + 實際執行證據 |
-| 07 | Release Readiness | Release 評審 |
+| 06 | UAT Preparation & Evidence | Test cases + actual execution evidence |
+| 07 | Release Readiness | Release review |
 
-### prompts/ — 可直接使用嘅 Prompt
+### prompts/ — Ready-to-use Prompts
 
-| 檔案 | 用途 |
+| File | Purpose |
 |---|---|
-| [START_CR_PROMPT.txt](prompts/START_CR_PROMPT.txt) | 開始或恢復一個 CR（按當前階段繼續，唔准跳閘） |
-| [phase5-independent-verification.md](prompts/phase5-independent-verification.md) | Phase 5 獨立驗證：Prompt A（Code Review）+ Prompt B（Test Case 產生） |
-| [session-review.md](prompts/session-review.md) | Session 交接：產生 `REPORT/session_handover.md` |
+| [START_CR_PROMPT.txt](prompts/START_CR_PROMPT.txt) | Start or resume a CR (continue from the current phase; never skip a gate) |
+| [phase5-independent-verification.md](prompts/phase5-independent-verification.md) | Phase 5 independent verification: Prompt A (code review) + Prompt B (test case generation) |
+| [session-review.md](prompts/session-review.md) | Session handover: produce `REPORT/session_handover.md` |
 
-### knowledge/ — 手機資料入庫
+### knowledge/ — Phone Capture Archive
 
-| 檔案 | 內容 |
+| File | Description |
 |---|---|
-| [INDEX.md](knowledge/INDEX.md) | 總目錄（自動維護，每存一篇加一行） |
-| [ai/2026-11-14-opencode-sql-agent-improvement.md](knowledge/ai/2026-11-14-opencode-sql-agent-improvement.md) | **Agent 改善建議**：Evidence-Driven Development、限定 Target SP、Minimal Diff、Retry Limit、Reviewer Agent 分工 |
+| [INDEX.md](knowledge/INDEX.md) | Master index (auto-maintained; one line added per saved item) |
+| [ai/2026-11-14-opencode-sql-agent-improvement.md](knowledge/ai/2026-11-14-opencode-sql-agent-improvement.md) | **Agent improvement recommendations**: evidence-driven development, target-SP scoping, minimal diff, retry limit, reviewer agent separation |
 
-分類資料夾：`inbox/`（未分類）、`ai/`、`dev/`、`finance/`、`life/`、`reading/`
+Category folders: `inbox/` (uncategorised), `ai/`, `dev/`, `finance/`, `life/`, `reading/`
 
 ---
 
-## 🚀 快速開始
+## 🚀 Quick Start
 
-1. 將 `docs/` 內嘅 `AGENTS.md` 放入你嘅 CR 工作目錄（OpenCode 會自動讀取）
-2. 用 `prompts/START_CR_PROMPT.txt` 開始每個 session
-3. 每個階段完成後，用 `prompts/` 內對應嘅驗證 Prompt 做獨立檢查
-4. 所有結論標記 `Verified` / `Assumed` / `Unknown`，並附上檔案路徑同行號
+1. Copy `AGENTS.md` from `docs/` into your CR working directory (OpenCode reads it automatically).
+2. Use `prompts/START_CR_PROMPT.txt` to start each session.
+3. After each phase, run the corresponding verification prompt in `prompts/` as an independent check.
+4. Label every conclusion as `Verified` / `Assumed` / `Unknown`, with file paths and line numbers.
 
 ---
 
-## ⚠️ 核心安全規則（摘要）
+## ⚠️ Core Safety Rules (Summary)
 
-- **永不**執行 production SQL、**永不**自動部署
-- `CR/`、`DATABASE/`、`OLD/` 一律 **只讀**
-- `SOLUTION/` **只在批准後**修改
-- 任何推測必須標記為 `Assumed` 或 `Unknown`，唔可以當成事實
-- 自動修正最多 **2 次**，之後必須停手並要求人手覆核
+- **Never** execute production SQL. **Never** deploy automatically.
+- `CR/`, `DATABASE/`, `OLD/` are **read-only**.
+- `SOLUTION/` is modified **only after approval**.
+- Any inference must be labelled `Assumed` or `Unknown`; never present as fact.
+- Automatic correction is limited to **2 attempts**, after which work must stop and human review must be requested.
 
 ---
 
