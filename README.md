@@ -30,6 +30,7 @@ Change Request（CR）工程工作流程嘅文件同筆記集合，針對 **Java
 | [CR-001-structure.md](docs/CR-001-structure.md) | CR-001 標準資料夾結構示例（CR / DATABASE / OLD / SOLUTION / TEST / REPORT） |
 | [SQL_Developer/AGENTS.md](docs/SQL_Developer/AGENTS.md) | **Stored Procedure CR 受控規則**：八階段流程、Gate A/B/C 人手閘、CONFIRMED/INFERRED/UNKNOWN 證據分級、Minimal Diff、短報告合約 |
 | [SQL_Developer/opencode.jsonc](docs/SQL_Developer/opencode.jsonc) | **OpenCode 嚴格權限基線**：edit 只限 REPORT/（SOLUTION/ 要 ask）、shell 只准 git status/diff、webfetch/websearch/subagent 全 deny |
+| [SQL_Developer/SDLC-Framework.md](docs/SQL_Developer/SDLC-Framework.md) | **SP Change Request SDLC 框架**：7 階段流程（Mermaid）、角色責任表、風險與 Rollback、Git 版本控制、報告寫作指引 |
 
 ### guides/ — 完整操作手冊
 
