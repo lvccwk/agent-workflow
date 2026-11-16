@@ -1,0 +1,33 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    // Read: allow all, but block secrets and keys
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.pem": "deny",
+      "*.key": "deny"
+    },
+
+    // Edit: deny everything by default, then open specific folders
+    "edit": {
+      "*": "deny",
+      "REPORT/**": "ask",                // Ask before writing reports
+      "TEST/**": "ask",                  // Ask before writing UAT SQL
+      "TEST/actual_results/**": "deny",  // DBA results: never modify
+      "SOLUTION/**": "ask"               // Gate A: always ask before changing SP
+    },
+
+    // Shell: deny all, only allow viewing git status
+    "bash": {
+      "*": "deny",
+      "git status*": "allow",
+      "git diff*": "allow"
+    },
+
+    "webfetch": "deny",            // No internet access (prevent data leakage)
+    "external_directory": "deny",  // Cannot access files outside the CR folder
+    "task": "deny"                 // No subagents (use a new session for Step 7)
+  }
+}
