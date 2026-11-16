@@ -38,6 +38,7 @@ Design principle: the AI Agent produces **auditable deliverables**; business req
 |---|---|
 | [OpenCode_CR_Agent_01-07.md](guides/OpenCode_CR_Agent_01-07.md) | **01–07 end-to-end manual**: per-phase purpose, actions, prompts, deliverables, stop conditions; appendices include the full AGENTS.md |
 | [OpenCode_CR_Agent_01-07.docx](guides/OpenCode_CR_Agent_01-07.docx) | Word version of the same manual (for distribution/printing) |
+| [CR_9Step_Prompt_Flow.md](guides/CR_9Step_Prompt_Flow.md) | **9 steps / 3 gates quick playbook**: one copy-ready prompt per step (folder → as-is → requirements → impact → plan → build → review → UAT → report), fixed guard-rail rules, Gate A/B/C stop points |
 
 **Phase mapping:**
 
@@ -89,4 +90,4 @@ Category folders: `inbox/` (uncategorised), `ai/`, `dev/`, `finance/`, `life/`, 
 
 ---
 
-*Last updated: 2026-11-14*
+*Last updated: 2026-11-16*
