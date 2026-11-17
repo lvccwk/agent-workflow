@@ -31,6 +31,7 @@ Design principle: the AI Agent produces **auditable deliverables**; business req
 | [SQL_Developer/AGENTS.md](docs/SQL_Developer/AGENTS.md) | **Stored Procedure CR controlled-agent rules**: eight-phase workflow, Gate A/B/C human approvals, CONFIRMED/INFERRED/UNKNOWN evidence grading, minimal diff, short-report contract |
 | [SQL_Developer/opencode.jsonc](docs/SQL_Developer/opencode.jsonc) | **OpenCode strict permission baseline**: edit limited to REPORT/ (SOLUTION/ requires ask), shell only git status/diff, webfetch/websearch/subagent all denied |
 | [SQL_Developer/SDLC-Framework.md](docs/SQL_Developer/SDLC-Framework.md) | **SP Change Request SDLC framework**: 7-phase workflow (Mermaid), role responsibility matrix, risks and rollback, Git version control, report writing guide |
+| [SQL_Developer/2026-11-17/SP-change-analysis-prompts.md](docs/SQL_Developer/2026-11-17/SP-change-analysis-prompts.md) | Original five-prompt workflow for SP diff analysis, As-Is / To-Be diagrams, impact analysis and UAT test SQL |
 | [SQL_Developer/AGENTS_9Step.md](docs/SQL_Developer/AGENTS_9Step.md) | **9-step condensed rule set** — copy straight into `CR-001/AGENTS.md`. Role, folder access, safety floor, 9-step / 3-gate workflow, evidence grading, minimal-change rule, stop rules, fixed 12-line reply format |
 | [SQL_Developer/AGENTS_9Step_Notes.md](docs/SQL_Developer/AGENTS_9Step_Notes.md) | **Why the 9-step rules are written that way** — section-by-section rationale, English-rules / Chinese-replies decision, and the two-layer defence (`AGENTS.md` advises, `opencode.jsonc` enforces) |
 
@@ -92,4 +93,4 @@ Category folders: `inbox/` (uncategorised), `ai/`, `dev/`, `finance/`, `life/`, 
 
 ---
 
-*Last updated: 2026-11-16*
+*Last updated: 2026-11-17*
