@@ -34,6 +34,7 @@ Design principle: the AI Agent produces **auditable deliverables**; business req
 | [SQL_Developer/2026-11-17/SP-change-analysis-prompts.md](docs/SQL_Developer/2026-11-17/SP-change-analysis-prompts.md) | Original five-prompt workflow for SP diff analysis, As-Is / To-Be diagrams, impact analysis and UAT test SQL |
 | [SQL_Developer/2026-11-17/SP-change-analysis-prompts.en.md](docs/SQL_Developer/2026-11-17/SP-change-analysis-prompts.en.md) | English version of the five-prompt SP analysis workflow |
 | [SQL_Developer/2026-11-17/uat-before-after-result-evidence.md](docs/SQL_Developer/2026-11-17/uat-before-after-result-evidence.md) | UAT before/after result comparison, evidence capture and efficient regression checks |
+| [SQL_Developer/2026-11-17/p1-accuracy-and-report-template-workflow.md](docs/SQL_Developer/2026-11-17/p1-accuracy-and-report-template-workflow.md) | P1 diff validation, independent review and report-template workflow |
 | [SQL_Developer/AGENTS_9Step.md](docs/SQL_Developer/AGENTS_9Step.md) | **9-step condensed rule set** — copy straight into `CR-001/AGENTS.md`. Role, folder access, safety floor, 9-step / 3-gate workflow, evidence grading, minimal-change rule, stop rules, fixed 12-line reply format |
 | [SQL_Developer/AGENTS_9Step_Notes.md](docs/SQL_Developer/AGENTS_9Step_Notes.md) | **Why the 9-step rules are written that way** — section-by-section rationale, English-rules / Chinese-replies decision, and the two-layer defence (`AGENTS.md` advises, `opencode.jsonc` enforces) |
 
