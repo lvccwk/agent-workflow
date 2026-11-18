@@ -38,6 +38,7 @@ Design principle: the AI Agent produces **auditable deliverables**; business req
 | [SQL_Developer/2026-11-17/CR_Report_Template.md](docs/SQL_Developer/2026-11-17/CR_Report_Template.md) | CR report template with Mermaid architecture, data-flow and impact diagrams, change traceability and UAT results |
 | [SQL_Developer/2026-11-17/condensed-3-prompt-workflow.md](docs/SQL_Developer/2026-11-17/condensed-3-prompt-workflow.md) | Condensed 3-prompt workflow for SP changes, reporting and UAT tests |
 | [SQL_Developer/2026-11-18/excel-export-connections-vba.md](docs/SQL_Developer/2026-11-18/excel-export-connections-vba.md) | VBA method to export Excel connection Command Text, Used In ranges and Power Query M formulas |
+| [SQL_Developer/2026-11-18/excel-export-workbook-name-and-location.md](docs/SQL_Developer/2026-11-18/excel-export-workbook-name-and-location.md) | Add Excel workbook name and file location columns to the connection export macro |
 | [SQL_Developer/AGENTS_9Step.md](docs/SQL_Developer/AGENTS_9Step.md) | **9-step condensed rule set** — copy straight into `CR-001/AGENTS.md`. Role, folder access, safety floor, 9-step / 3-gate workflow, evidence grading, minimal-change rule, stop rules, fixed 12-line reply format |
 | [SQL_Developer/AGENTS_9Step_Notes.md](docs/SQL_Developer/AGENTS_9Step_Notes.md) | **Why the 9-step rules are written that way** — section-by-section rationale, English-rules / Chinese-replies decision, and the two-layer defence (`AGENTS.md` advises, `opencode.jsonc` enforces) |
 
