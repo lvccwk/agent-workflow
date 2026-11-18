@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    // Read everything except secrets
+    "read": { "*": "allow", "*.env": "deny", "*.key": "deny", "*.pem": "deny" },
+
+    // Write only to REPORT/ and TEST/ (DBA results are protected)
+    "edit": {
+      "*": "deny",
+      "REPORT/**": "allow",
+      "TEST/**": "allow",
+      "TEST/actual_results/**": "deny"
+    },
+
+    // Shell: git only (needed for git diff)
+    "bash": { "*": "deny", "git *": "allow" },
+
+    "webfetch": "deny",
+    "external_directory": "deny",
+    "task": "deny"
+  }
+}
