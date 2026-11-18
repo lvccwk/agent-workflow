@@ -32,13 +32,19 @@ flowchart LR
 2. Using CR/ and NSC_transition_plan.txt, create REPORT/01_changes.md:
 
    | C-ID | SP | Line | Before | After | REQ-ID | CR quote |
+   |---|---|---|---|---|---|---|
 
    One row per diff hunk. List changes without a requirement and
    requirements without a change.
 3. Using CR/report_list.csv and DATABASE/ (max 2 levels of callers),
-   add a section "Impacted Reports":
+   add a section "Impacted User Reports". One row per Excel report
+   whose Command Text uses a changed SP or a table it writes to:
 
-   | Report | Sheet | Changed Object Used | Business Effect | Used In |
+   | R-ID | Excel Name | Connection Name | Command Text | Used In | Changed Object Used (C-ID) | Business Effect |
+   |---|---|---|---|---|---|---|
+
+   Copy Command Text exactly as in report_list. State the number
+   of reports checked and the number impacted.
 
 Unsure = UNKNOWN. Do not modify OLD/ or SOLUTION/.
 
@@ -52,15 +58,33 @@ Using REPORT/01_changes.md, OLD/, SOLUTION/ and DATABASE/:
    REPORT/CR_Report.md. Formal business English, no emojis.
    Mermaid diagrams from the actual SPs, max 10 nodes, changes
    highlighted. Test results = NOT RUN.
-2. Create REPORT/test_cases.md:
+   Section 6.2: copy the "Impacted User Reports" table from
+   01_changes.md, and draw one diagram:
+   changed SP -> output table -> Excel report (Used In).
+2. Create REPORT/test_cases.md with two parts:
+
+   **A) Logic tests**
 
    | Test-ID | C-ID | Scenario | Expected (per CR) | Before | After | Result | Evidence |
+   |---|---|---|---|---|---|---|---|
 
-   Cover normal, boundary, NULL, regression and each impacted report.
-3. Create TEST/uat_queries.sql: SELECT only; per Test-ID COUNT,
-   SUM and top 10 rows; label any EXEC for DBA confirmation.
-   Run before and after deployment with identical data; save to
-   actual_results/before/ and actual_results/after/ as <Test-ID>.csv.
+   Cover normal, boundary, NULL and regression.
+
+   **B) User report tests, one per impacted Excel report**
+
+   | Test-ID | R-ID | Excel Name | Used In | Expected change (per CR) | Before | After | Result | Evidence |
+   |---|---|---|---|---|---|---|---|---|
+3. Create TEST/uat_queries.sql with two sections:
+
+   **A) Logic tests:** SELECT only; per Test-ID COUNT, SUM, top 10 rows.
+
+   **B) User report tests:** for each R-ID, the report's original
+   Command Text, followed by a COUNT and SUM wrapper of it.
+   Header comment per query: Excel Name, Connection Name,
+   Used In. Label any EXEC "EXEC - DBA confirmation required".
+   Run before and after deployment with identical data and
+   parameters; save to actual_results/before/ and
+   actual_results/after/ as <Test-ID>.csv.
 
 **Checkpoint 2:** Queries confirmed read-only. DBA executes before deployment, deploys, executes again.
 
