@@ -62,8 +62,8 @@ flowchart LR
     T3[("Table_C (New)")] --> SP1
     SP1 --> OUT[("Output_Table")]
     OUT --> RPT["Agency Report"]
-    style SP1 fill:#f8d7da,stroke:#a61b29
-    style T3 fill:#d4edda,stroke:#1e7e34
+    style SP1 fill:#f8d7da,stroke:#a61b29,color:#000000
+    style T3 fill:#d4edda,stroke:#1e7e34,color:#000000
 ```
 
 > Legend: shaded red = changed; shaded green = new; unshaded = unchanged.
@@ -90,7 +90,7 @@ flowchart TD
     B --> C["③ WHERE TitleCode >= 120"]
     C --> D["④ GROUP BY Agency<br/>SUM(Premium)"]
     D --> E["⑤ INSERT Output_Table"]
-    style C fill:#f8d7da,stroke:#a61b29
+    style C fill:#f8d7da,stroke:#a61b29,color:#000000
 ```
 
 | Step | Before | After | Changed? |
@@ -135,10 +135,10 @@ flowchart LR
     OUT --> R1["Agency Report<br/>High"]
     OUT --> SP9["sp_Downstream<br/>Medium"]
     SP9 --> R2["Monthly Summary<br/>Medium"]
-    style SP1 fill:#f8d7da,stroke:#a61b29
-    style R1 fill:#f8d7da
-    style SP9 fill:#fff3cd
-    style R2 fill:#fff3cd
+    style SP1 fill:#f8d7da,stroke:#a61b29,color:#000000
+    style R1 fill:#f8d7da,color:#000000
+    style SP9 fill:#fff3cd,color:#000000
+    style R2 fill:#fff3cd,color:#000000
 ```
 
 | Object | How it is affected | Risk | Test required |
