@@ -2,6 +2,9 @@
 
 Three prompts, three checkpoints. Review each output before proceeding.
 
+First-time setup: follow [README.md](README.md) to choose a workspace, create
+the CR folders, copy templates and place input files before Step 1.
+
 ```mermaid
 flowchart LR
     P["Prepare<br/>Inputs"] --> A["Step 1<br/>Analyse"]
@@ -25,7 +28,7 @@ One CR, one working folder. Paths in this workflow are relative to CR-<ID>/.
 CR-<ID>/
 ├── AGENTS.md
 ├── opencode.jsonc
-├── NSC_transition_plan.txt
+├── transition_plan.txt 
 ├── CR/                              # Approved inputs; read-only
 │   ├── CR.txt
 │   ├── CR_attachment.csv
@@ -49,8 +52,10 @@ CR-<ID>/
 ```
 
 Create the folders before Step 1. Copy the report template from this
-standard/ folder into REPORT/. Supply AGENTS.md and opencode.jsonc from
-the approved project configuration. Generated reports and test SQL are
+standard/ folder into REPORT/. Copy standard/AGENTS.md to the CR root and
+opencode.jsonc from the parent SQL_Developer/ folder after configuration review.
+Confirm permission to create TEST/uat_queries.sql before Step 2; do not bypass
+a denied write. Generated reports and test SQL are
 created in the steps below; actual_results/ is populated by the DBA.
 
 ## Prepare
@@ -59,13 +64,13 @@ created in the steps below; actual_results/ is populated by the DBA.
 |---|---|
 | CR Word document and Excel attachment | CR/CR.txt, CR/CR_attachment.csv |
 | Report inventory (credentials removed) | CR/report_list.csv |
-| NSC transition plan | NSC_transition_plan.txt |
+| NSC transition plan | transition_plan.txt  |
 | Report template | REPORT/CR_Report_Template_Business.md |
 
 ## Step 1 — Analyse
 
 1. Run: `git diff --no-index -w OLD/ SOLUTION/ > REPORT/00_raw_diff.txt`
-2. Using CR/ and NSC_transition_plan.txt, create REPORT/01_changes.md:
+2. Using CR/ and transition_plan.txt , create REPORT/01_changes.md:
 
    | C-ID | SP | Line | Before | After | REQ-ID | CR quote |
    |---|---|---|---|---|---|---|
@@ -117,7 +122,9 @@ Using REPORT/01_changes.md, OLD/, SOLUTION/ and DATABASE/:
    **B) User report tests:** for each R-ID, the report's original
    Command Text, followed by a COUNT and SUM wrapper of it.
    Header comment per query: Excel Name, Connection Name,
-   Used In. Label any EXEC "EXEC - DBA confirmation required".
+   Used In. Keep EXEC and commands with possible side effects commented
+   out; label any EXEC "EXEC - DBA confirmation required". Add COUNT/SUM
+   wrappers only for compatible read-only SELECTs and confirmed numeric columns.
    Run before and after deployment with identical data and
    parameters; save to actual_results/before/ and
    actual_results/after/ as <Test-ID>.csv.

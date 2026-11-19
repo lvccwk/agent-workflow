@@ -8,7 +8,7 @@ Agent 讀 .docx 同入面夾住嘅 Excel 經常會漏嘢。開工之前，你自
 
 - CR Word → 另存做 `CR/CR9.txt`
 - Word 入面嘅 Excel 附件 → 打開再另存做 `CR/CR9_attachment.csv`
-- NSC transition plan → 另存做 `NSC_transition_plan.txt`
+- NSC transition plan → 另存做 `transition_plan.txt `
 
 ### 2. 用工具搵改動，唔好靠 agent 自己睇
 
@@ -29,7 +29,7 @@ Step 1: Run this and save output to REPORT/00_raw_diff.txt:
   git diff --no-index -w OLD/ SOLUTION/
 
 Step 2: Read CR/CR9.txt, CR/CR9_attachment.csv and
-NSC_transition_plan.txt.
+transition_plan.txt .
 
 Step 3: Create REPORT/01_changes.md. For EVERY diff hunk in
 00_raw_diff.txt, one row:

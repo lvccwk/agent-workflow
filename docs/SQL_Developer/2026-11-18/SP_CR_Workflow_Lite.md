@@ -23,13 +23,13 @@ flowchart LR
 |---|---|
 | CR Word document and Excel attachment | CR/CR.txt, CR/CR_attachment.csv |
 | Report inventory (credentials removed) | CR/report_list.csv |
-| NSC transition plan | NSC_transition_plan.txt |
+| NSC transition plan | transition_plan.txt  |
 | Report template | REPORT/CR_Report_Template_Business.md |
 
 ## Step 1 — Analyse
 
 1. Run: `git diff --no-index -w OLD/ SOLUTION/ > REPORT/00_raw_diff.txt`
-2. Using CR/ and NSC_transition_plan.txt, create REPORT/01_changes.md:
+2. Using CR/ and transition_plan.txt , create REPORT/01_changes.md:
 
    | C-ID | SP | Line | Before | After | REQ-ID | CR quote |
    |---|---|---|---|---|---|---|
