@@ -17,6 +17,42 @@ flowchart LR
     class C1,C2,C3 gate
 ```
 
+## Folder Structure
+
+One CR, one working folder. Paths in this workflow are relative to CR-<ID>/.
+
+```text
+CR-<ID>/
+├── AGENTS.md
+├── opencode.jsonc
+├── NSC_transition_plan.txt
+├── CR/                              # Approved inputs; read-only
+│   ├── CR.txt
+│   ├── CR_attachment.csv
+│   └── report_list.csv              # Credentials removed
+├── DATABASE/                        # Reference DDL and SP library; read-only
+├── OLD/                             # Original SPs; immutable baseline
+├── SOLUTION/                        # Changed SPs supplied for comparison
+├── REPORT/
+│   ├── CR_Report_Template_Business.md
+│   ├── 00_raw_diff.txt              # Step 1
+│   ├── 01_changes.md                # Step 1
+│   ├── CR_Report.md                 # Steps 2 and 3
+│   └── test_cases.md                # Steps 2 and 3
+└── TEST/
+    ├── uat_queries.sql              # Step 2; DBA executes after review
+    ├── verification_scripts/        # Additional test SQL drafts, if needed
+    ├── expected_results/            # Approved expected outputs, if supplied
+    └── actual_results/              # DBA-supplied evidence; read-only
+        ├── before/                 # <Test-ID>.csv before deployment
+        └── after/                  # <Test-ID>.csv after deployment
+```
+
+Create the folders before Step 1. Copy the report template from this
+standard/ folder into REPORT/. Supply AGENTS.md and opencode.jsonc from
+the approved project configuration. Generated reports and test SQL are
+created in the steps below; actual_results/ is populated by the DBA.
+
 ## Prepare
 
 | Input | Save as |
