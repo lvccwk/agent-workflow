@@ -47,6 +47,7 @@ Design principle: the AI Agent produces **auditable deliverables**; business req
 | [SQL_Developer/2026-11-18/PROMPTS.md](docs/SQL_Developer/2026-11-18/PROMPTS.md) | Step-by-step prompts for CR analysis, independent review, report/tests and results |
 | [SQL_Developer/2026-11-18/opencode.jsonc](docs/SQL_Developer/2026-11-18/opencode.jsonc) | OpenCode permission config: read secrets denied, writes scoped to REPORT/ and TEST/, Git-only shell |
 | [SQL_Developer/2026-11-18/CR_Report_Template_Business.md](docs/SQL_Developer/2026-11-18/CR_Report_Template_Business.md) | Business-style CR report template with Mermaid diagrams, traceability, impact analysis, UAT results and sign-off |
+| [SQL_Developer/2026-11-24/opencode-cli-hide-reasoning.md](docs/SQL_Developer/2026-11-24/opencode-cli-hide-reasoning.md) | OpenCode CLI global `cli.json` setup to hide reasoning/thinking blocks while preserving model reasoning |
 | [SQL_Developer/AGENTS_9Step.md](docs/SQL_Developer/AGENTS_9Step.md) | **9-step condensed rule set** — copy straight into `CR-001/AGENTS.md`. Role, folder access, safety floor, 9-step / 3-gate workflow, evidence grading, minimal-change rule, stop rules, fixed 12-line reply format |
 | [SQL_Developer/AGENTS_9Step_Notes.md](docs/SQL_Developer/AGENTS_9Step_Notes.md) | **Why the 9-step rules are written that way** — section-by-section rationale, English-rules / Chinese-replies decision, and the two-layer defence (`AGENTS.md` advises, `opencode.jsonc` enforces) |
 
@@ -108,4 +109,4 @@ Category folders: `inbox/` (uncategorised), `ai/`, `dev/`, `finance/`, `life/`, 
 
 ---
 
-*Last updated: 2026-11-18*
+*Last updated: 2026-11-24*
